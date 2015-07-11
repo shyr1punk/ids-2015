@@ -19,8 +19,15 @@
     position: relative;
 }
 
-.table>tbody>tr:nth-of-type(odd) {
+tr:nth-child(even) td:first-child::before {
+    content: "";
+    position: absolute;
     background-color: #f5f5f5;
+    top: 0;
+    left: -5000px;
+    width: 10000px;
+    height: 100%;
+    z-index: -10;
 }
 
 .table>tbody>tr>th {
