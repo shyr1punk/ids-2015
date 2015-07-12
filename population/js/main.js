@@ -49,39 +49,57 @@ var responses = {};
 
 for (i = 0; i < 3; i++) {
     var request = requests[i];
-    var callback = function (error, result) {
-        responses[request] = result;
-        var l = [];
-        for (K in responses)
-            l.push(K);
+    /**
+     * Описание исправления:
+     *
+     * Внутри функции callback происходил доступ к внешней переменной request,
+     * которая изменялась на каждом шаге цикла.
+     *
+     * В API внутри setTimeout функция обратного вызова выполнялась после
+     * прохождения цикла с вызовом getData (т.к. даже время задержки == 0
+     * ставит выполнение функции, переданной в setTimeout, в конец очереди)
+     *
+     * Из-за этих двух особенностей при выполенении функции обратного вызова
+     * в переменной request хранилась последний элемент массива requests,
+     * т.е. '/population'
+     *
+     * Для исправления ошибки требуется объявить функцию обратного вызова
+     * внутри замыкания, что не позволит переменной request внутри замыкания
+     * изменяться на каждом шаге цикла
+     */
+    var calc = (function (request) {
+        return function callback(error, result) {
+            responses[request] = result;
+            var l = [];
+            for (K in responses)
+                l.push(K);
 
-        if (l.length == 3) {
-            var c = [], cc = [], p = 0;
-            for (i = 0; i < responses['/countries'].length; i++) {
-                if (responses['/countries'][i].continent === 'Africa') {
-                    c.push(responses['/countries'][i].name);
-                }
-            }
-
-            for (i = 0; i < responses['/cities'].length; i++) {
-                for (j = 0; j < c.length; j++) {
-                    if (responses['/cities'][i].country === c[j]) {
-                        cc.push(responses['/cities'][i].name);
+            if (l.length == 3) {
+                var c = [], cc = [], p = 0;
+                for (i = 0; i < responses['/countries'].length; i++) {
+                    if (responses['/countries'][i].continent === 'Africa') {
+                        c.push(responses['/countries'][i].name);
                     }
                 }
-            }
 
-            for (i = 0; i < responses['/populations'].length; i++) {
-                for (j = 0; j < cc.length; j++) {
-                    if (responses['/populations'][i].name === cc[j]) {
-                        p += responses['/populations'][i].count;
+                for (i = 0; i < responses['/cities'].length; i++) {
+                    for (j = 0; j < c.length; j++) {
+                        if (responses['/cities'][i].country === c[j]) {
+                            cc.push(responses['/cities'][i].name);
+                        }
                     }
                 }
+
+                for (i = 0; i < responses['/populations'].length; i++) {
+                    for (j = 0; j < cc.length; j++) {
+                        if (responses['/populations'][i].name === cc[j]) {
+                            p += responses['/populations'][i].count;
+                        }
+                    }
+                }
+                console.log('Total population in African cities: ' + p);
             }
-
-            console.log('Total population in African cities: ' + p);
-        }
-    };
-
-    getData(request, callback);
+        };
+    })(request);
+    getData(request, calc);
 }
