@@ -1,6 +1,6 @@
 (function (global) {
     'use strict';
-    global.AudioPlayer = {
+    var AudioPlayer = global.AudioPlayer = {
         audioContext: null,
         bufferSource: null,
         /**
