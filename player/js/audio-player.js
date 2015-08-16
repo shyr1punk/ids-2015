@@ -1,6 +1,6 @@
 (function (global) {
     'use strict';
-    var AudioPlayer = global.AudioPlayer = {
+    global.AudioPlayer = {
         audioContext: null,
         bufferSource: null,
         /**
@@ -12,7 +12,7 @@
             this.bufferSource = this.audioContext.createBufferSource();
             this.bufferSource.loop = true;
             this.bufferSource.connect(this.audioContext.destination);
-            AudioPlayer.bufferSource.buffer = buffer;
+            this.bufferSource.buffer = buffer;
         },
         /**
          * Play action
