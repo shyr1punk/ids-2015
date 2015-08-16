@@ -1,0 +1,24 @@
+#file-wrapper {
+    text-align: center;
+    overflow: hidden;
+    width: 100px;
+    height: 50px;
+    border: 1px solid #038f1a;
+    background-color: #038f1a;
+}
+
+#input {
+    margin-top: -50px;
+    margin-left:-410px;
+    -moz-opacity: 0;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    font-size: 150px;
+    height: 100px;
+}
+
+#file-wrapper>div {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
