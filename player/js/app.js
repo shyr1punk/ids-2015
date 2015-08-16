@@ -46,6 +46,7 @@
             });
         };
         reader.readAsArrayBuffer(this.files[0]);
+        document.getElementById('filename').innerHTML = this.files[0].name;
     }, false);
 
     document.getElementById('play').addEventListener('click', function handlePlay() {
