@@ -46,8 +46,8 @@ function getData(url, callback) {
  */
 var requests = ['/countries', '/cities', '/populations'];
 var responses = {};
-
-var countryOrCityName = window.prompt("Type a country or continent name");
+var countryOrCityName = window.prompt('Type a country or continent name');
+var i;
 
 for (i = 0; i < 3; i++) {
     var request = requests[i];
@@ -70,12 +70,20 @@ for (i = 0; i < 3; i++) {
      * изменяться на каждом шаге цикла
      */
     var calc = (function (request, countryOrCityName) {
+        'use strict';
         return function callback(error, result) {
             responses[request] = result;
-            var l = [];
-            for (K in responses)
-                l.push(K);
-            if (l.length == 3) {
+            var l = [],
+                K,
+                i,
+                j;
+            for (K in responses) {
+                if (responses.hasOwnProperty(K)) {
+                    l.push(K);
+                }
+            }
+
+            if (l.length === 3) {
                 if (countryOrCityName === '') {
                     var c = [], cc = [], p = 0;
                     for (i = 0; i < responses['/countries'].length; i++) {
