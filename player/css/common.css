@@ -22,3 +22,9 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+#drop-zone {
+    height: 50px;
+    width: 300px;
+    border: 1px dashed #808080;
+}
